@@ -1,5 +1,7 @@
 # CachyOS Tweaks Flake
 
+## This is made with AI for test purposes, do not use it!
+
 A Nix flake that provides performance tweaks by CachyOS.
 
 ## Features
@@ -35,16 +37,12 @@ Then, in your NixOS configuration module, import and enable the module:
 {
   imports = [ inputs.cachy-tweaks.nixosModules.default ];
 
-  cachy.enable = true;
-  
-  # Enable all tweaks at once:
-  # cachy.all = true;
-  
-  # Or customize individual components:
-  # cachy.zram = "disable";
-  # cachy.kernelTweaks = true;
-  # cachy.udevRules = true;
-  # etc.
+  cachy = {
+    enable = true;
+    all = false;
+    zram = false;
+    kernelTweaks = true;
+    udevRules = true;
 }
 ```
 
@@ -54,7 +52,7 @@ The module provides the following options under `cachy.*`:
 
 - `enable`: Enable all CachyOS tweaks (default: false)
 - `all`: Enable all CachyOS tweaks at once (default: false)
-- `zram`: Enable or disable ZRAM ("enable" or "disable", default: "enable")
+- `zram`: Enable or disable ZRAM (default: true)
 - `kernelTweaks`: Enable kernel tweaks for performance (default: false)
 - `udevRules`: Enable udev rules for performance (default: false)
 - `modprobeConfig`: Enable modprobe configuration tweaks (default: false)

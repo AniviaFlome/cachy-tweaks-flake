@@ -19,9 +19,9 @@ This document lists all available options for the CachyOS performance tweaks Nix
 These options control specific aspects of the system performance. They can be enabled individually or all at once using the `cachy.all` option.
 
 ### `cachy.zram`
-- **Type**: Enum (`"enable"` or `"disable"`)
-- **Default**: `"enable"`
-- **Description**: Enable or disable ZRAM.
+- **Type**: Boolean
+- **Default**: `true`
+- **Description**: Enable or disable ZRAM. When enabled, it provides compressed swap space in RAM which can improve system responsiveness, especially on systems with limited RAM.
 
 ### `cachy.kernelTweaks`
 - **Type**: Boolean
@@ -75,25 +75,31 @@ These options control specific aspects of the system performance. They can be en
 ### Enable all tweaks at once:
 ```nix
 {
-  cachy.enable = true;
-  cachy.all = true;
+  cachy = {
+    enable = true;
+    all = true;
+  };
 }
 ```
 
 ### Enable only specific tweaks:
 ```nix
 {
-  cachy.enable = true;
-  cachy.kernelTweaks = true;
-  cachy.udevRules = true;
+  cachy = {
+    enable = true;
+    kernelTweaks = true;
+    udevRules = true;
+  };
 }
 ```
 
 ### Enable all tweaks but disable specific ones:
 ```nix
 {
-  cachy.enable = true;
-  cachy.all = true;
-  cachy.xserverTweaks = false; # Explicitly disable X server tweaks
+  cachy = {
+    enable = true;
+    all = true;
+    xserverTweaks = false;
+  };
 }
 ```

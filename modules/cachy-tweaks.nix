@@ -15,8 +15,8 @@ in {
     };
 
     zram = mkOption {
-      type = types.enum [ "enable" "disable" ];
-      default = "enable";
+      type = types.bool;
+      default = true;
       description = "Enable or disable ZRAM";
     };
 
@@ -65,6 +65,13 @@ in {
       systemdTweaks = mkIf cfg.all true;
       journaldTweaks = mkIf cfg.all true;
       xserverTweaks = mkIf cfg.all true;
+    };
+    
+    zramSwap = mkIf (cfg.zram || cfg.all) {
+      enable = true;
+      algorithm = "ztsd";
+      memoryPercent = 100;
+      priority = 100;
     };
     
     boot.kernel.sysctl = mkIf (cfg.kernelTweaks || cfg.all) (mkMerge [
@@ -196,5 +203,4 @@ in {
         DefaultTimeoutStopSec = "10s";
       })
     ]);
-  };
 }
