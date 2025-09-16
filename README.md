@@ -24,7 +24,7 @@ Add this flake to your system's flake inputs:
 ```nix
 {
   inputs = {
-    cachy-tweaks.url = "github:your-username/cachy-tweaks";
+    cachy-tweaks.url = "github:AniviaFlome/cachy-tweaks-flake";
   };
 }
 ```
