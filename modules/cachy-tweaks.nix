@@ -191,12 +191,8 @@ in
           DefaultLimitNOFILE = "2048:2097152";
         };
       };
-
-      extraConfig = ''
-        [Journal]
-        SystemMaxUse=50M
-      '';
     };
+    services.journald.extraConfig = = mkIf (cfg.systemd || cfg.all) { "SystemMaxUse=50M" };
 
     services.xserver = mkIf (cfg.xserver || cfg.all) {
       config = ''
