@@ -197,11 +197,13 @@ in {
       ];
     };
 
-    systemd.settings.Manager = mkIf (cfg.systemdTweaks || cfg.all) (mkMerge [
-      (mkDefault {
-        DefaultTimeoutStartSec = "15s";
-        DefaultTimeoutStopSec = "10s";
-      })
-    ]);
+    systemd = mkIf (cfg.systemdTweaks || cfg.all) {
+      settings = {
+        Manager = {
+          DefaultTimeoutStartSec = "15s";
+          DefaultTimeoutStopSec = "10s";
+        };
+      };
+    };
   };
 }
