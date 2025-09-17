@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 with lib;
 
@@ -16,67 +16,59 @@ in
       description = "Enable all CachyOS tweaks";
     };
 
+    kernel = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Enable kernel tweaks for performance";
+    };
+
+    modprobe = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Enable modprobe configuration tweaks";
+    };
+
+    systemd = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Enable systemd and journald tweaks";
+    };
+
+    udev = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Enable udev rules for performance";
+    };
+
+    xserver = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Enable X server tweaks";
+    };
+
     zram = mkOption {
       type = types.bool;
       default = true;
       description = "Enable or disable ZRAM";
     };
 
-    kernelTweaks = mkOption {
+    scripts = mkOption {
       type = types.bool;
       default = false;
-      description = "Enable kernel tweaks for performance";
+      description = "Enable CachyOS helper scripts";
     };
 
-    udevRules = mkOption {
-      type = types.bool;
-      default = false;
-      description = "Enable udev rules for performance";
-    };
-
-    modprobeConfig = mkOption {
-      type = types.bool;
-      default = false;
-      description = "Enable modprobe configuration tweaks";
-    };
-
-    systemdTweaks = mkOption {
-      type = types.bool;
-      default = false;
-      description = "Enable systemd tweaks";
-    };
-
-    journaldTweaks = mkOption {
-      type = types.bool;
-      default = false;
-      description = "Enable journald tweaks";
-    };
-
-    xserverTweaks = mkOption {
-      type = types.bool;
-      default = false;
-      description = "Enable X server tweaks";
-    };
-  };
-
-  config = mkIf (cfg.enable || cfg.all) {
+  };\n\n  config = mkIf (cfg.enable || cfg.all) {
     cachy = {
-      kernelTweaks = mkIf cfg.all true;
-      udevRules = mkIf cfg.all true;
-      modprobeConfig = mkIf cfg.all true;
-      systemdTweaks = mkIf cfg.all true;
-      journaldTweaks = mkIf cfg.all true;
-      xserverTweaks = mkIf cfg.all true;
+      kernel = mkIf cfg.all true;
+      udev = mkIf cfg.all true;
+      modprobe = mkIf cfg.all true;
+      systemd = mkIf cfg.all true;
+      xserver = mkIf cfg.all true;
+      scripts = mkIf cfg.all true;
     };
     
-    zramSwap = mkIf (cfg.zram || cfg.all) {
-      enable = true;
-      algorithm = "ztsd";
-      memoryPercent = 100;
-      priority = 100;
-    };
-    
-    boot.kernel.sysctl = mkIf (cfg.kernelTweaks || cfg.all) {
+    boot.kernel.sysctl = mkIf (cfg.kernel || cfg.all) {
       "vm.swappiness" = 100;
       "vm.vfs_cache_pressure" = 50;
       "vm.dirty_bytes" = 268435456;
@@ -91,8 +83,31 @@ in
       "net.core.netdev_max_backlog" = 4096;
       "fs.file-max" = 2097152;
     };
+    
+    boot.extraModprobeConfig = mkIf (cfg.modprobe || cfg.all) ''
+      # NVIDIA driver tweaks
+      options nvidia NVreg_UsePageAttributeTable=1
+                    NVreg_InitializeSystemMemoryAllocations=0
+                    NVreg_DynamicPowerManagement=0x02
 
-    services.udev.extraRules = mkIf (cfg.udevRules || cfg.all) ''
+      # Force AMDGPU on Southern Islands (GCN 1.0) and Sea Islands (GCN 2.0)
+      options amdgpu si_support=1 cik_support=1
+      options radeon si_support=0 cik_support=0
+
+      # Blacklist watchdog modules
+      blacklist iTCO_wdt
+      blacklist iTCO_vendor_support
+      blacklist sp5100_tco
+
+      # Disable power save for snd_hda_intel
+      options snd_hda_intel power_save=0 power_save_controller=N
+    '';
+
+    boot.kernelParams = mkIf (cfg.kernel || cfg.all) [
+      "max_ptes_none = 409"
+    ];
+
+    services.udev.extraRules = mkIf (cfg.udev || cfg.all) ''
       # Audio permissions
       KERNEL=="rtc0", GROUP="audio"
       KERNEL=="hpet", GROUP="audio"
@@ -148,34 +163,40 @@ in
               echo 0 > /sys/module/snd_hda_intel/parameters/power_save'"
     '';
 
-    boot.extraModprobeConfig = mkIf (cfg.modprobeConfig || cfg.all) ''
-      # NVIDIA driver tweaks
-      options nvidia NVreg_UsePageAttributeTable=1 
-                    NVreg_InitializeSystemMemoryAllocations=0 
-                    NVreg_DynamicPowerManagement=0x02
+    environment.systemPackages = mkIf (cfg.scripts || cfg.all) (
+      let
+        scriptNames = builtins.attrNames (builtins.readDir ./scripts);
+        scripts = map (name: pkgs.writeScriptBin name (builtins.readFile ./scripts/${name})) scriptNames;
+        dependencies = with pkgs; [
+          inxi
+          utillinux
+          systemd
+          power-profiles-daemon
+          pciutils
+          curl
+          sbctl
+          lua
+        ];
+      in
+      scripts ++ dependencies
+    );
 
-      # Force AMDGPU on Southern Islands (GCN 1.0) and Sea Islands (GCN 2.0)
-      options amdgpu si_support=1 cik_support=1
-      options radeon si_support=0 cik_support=0
+    systemd = mkIf (cfg.systemd || cfg.all) {
+      settings = {
+        Manager = {
+          DefaultTimeoutStartSec = "15s";
+          DefaultTimeoutStopSec = "10s";
+          DefaultLimitNOFILE = "2048:2097152";
+        };
+      };
 
-      # Blacklist watchdog modules
-      blacklist iTCO_wdt
-      blacklist iTCO_vendor_support
-      blacklist sp5100_tco
+      extraConfig = ''
+        [Journal]
+        SystemMaxUse=50M
+      '';
+    };
 
-      # Disable power save for snd_hda_intel
-      options snd_hda_intel power_save=0 power_save_controller=N
-    '';
-
-    boot.kernelParams = mkIf (cfg.kernelTweaks || cfg.all) [
-      "max_ptes_none = 409"
-    ];
-
-    services.journald.extraConfig = mkIf (cfg.journaldTweaks || cfg.all) ''
-      SystemMaxUse=50M
-    '';
-
-    services.xserver = mkIf (cfg.xserverTweaks || cfg.all) {
+    services.xserver = mkIf (cfg.xserver || cfg.all) {
       config = ''
       Section "InputClass"
           Identifier "libinput touchpad catchall"
@@ -187,13 +208,11 @@ in
     '';
     };
 
-    systemd = mkIf (cfg.systemdTweaks || cfg.all) {
-      settings = {
-        Manager = {
-          DefaultTimeoutStartSec = "15s";
-          DefaultTimeoutStopSec = "10s";
-        };
-      };
+    zramSwap = mkIf (cfg.zram || cfg.all) {
+      enable = true;
+      algorithm = "ztsd";
+      memoryPercent = 100;
+      priority = 100;
     };
   };
 }

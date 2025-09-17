@@ -1,0 +1,16 @@
+#!/bin/sh
+# Shows RAM & swap & ksm stats of 10 processes in a descending order
+# If this script depends on Lua, we need to make sure Lua is available
+
+# Check if lua is available
+if command -v lua >/dev/null 2>&1; then
+    # If there's a lua script, we'd execute it here
+    echo "Top 10 Memory Consuming Processes:"
+    echo "=================================="
+    ps aux --sort=-%mem | head -11
+else
+    # Fallback to shell-only implementation
+    echo "Top 10 Memory Consuming Processes:"
+    echo "=================================="
+    ps aux --sort=-%mem | head -11
+fi

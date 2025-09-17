@@ -1,7 +1,3 @@
-# CachyOS Tweaks Options
-
-This document lists all available options for the CachyOS performance tweaks NixOS module.
-
 ## Main Options
 
 ### `cachy.enable`
@@ -16,59 +12,60 @@ This document lists all available options for the CachyOS performance tweaks Nix
 
 ## Individual Tweak Options
 
-These options control specific aspects of the system performance. They can be enabled individually or all at once using the `cachy.all` option.
+### `cachy.all`
+- **Type**: Boolean
+- **Default**: `false`
+- **Description**: Enable all of the tweaks
+
+### `cachy.kernel`
+- **Type**: Boolean
+- **Default**: `false`
+- **Description**: Enable kernel tweaks
+
+### `cachy.modprobe`
+- **Type**: Boolean
+- **Default**: `false`
+- **Description**: Enable modprobe configuration tweaks
+
+### `cachy.scripts`
+- **Type**: Boolean
+- **Default**: `false`
+- **Description**: Enable CachyOS helper scripts
+
+### `cachy.scripts`
+- **Type**: Boolean
+- **Default**: `false`
+- **Description**: Enable CachyOS helper scripts. When enabled, the following scripts will be available in your system:
+  - `cachyos-bugreport.sh` - Collects various logs from inxi, dmesg and journalctl to aid in troubleshooting
+  - `game-performance` - Wrapper script for powerprofilesctl to switch to performance profile on-demand
+  - `dlss-swapper` - Wrapper script to force the latest DLSS preset in games that support the technology
+  - `dlss-swapper-dll` - Like dlss-swapper, but requires manually updating the nvngx_dlss.dll library
+  - `kerver` - QoL script to show information about the current kernel
+  - `paste-cachyos` - Script to paste terminal output for text files from the system
+  - `pci-latency` - Reduces latency_timer value to 80 for PCI sound cards
+  - `sbctl-batch-sign` - Helper script to easily sign kernel images and EFI binaries for secure boot
+  - `topmem` - Shows RAM & swap & ksm stats of 10 processes in a descending order
+  - `zink-run` - Makes it easier to execute an OpenGL program through Zink Gallium Driver
+
+### `cachy.systemd`
+- **Type**: Boolean
+- **Default**: `false`
+- **Description**: Enable systemd tweaks
+
+### `cachy.xserver`
+- **Type**: Boolean
+- **Default**: `false`
+- **Description**: Enable X server tweaks
+
+### `cachy.udev`
+- **Type**: Boolean
+- **Default**: `false`
+- **Description**: Enable udev rules
 
 ### `cachy.zram`
 - **Type**: Boolean
 - **Default**: `true`
-- **Description**: Enable or disable ZRAM. When enabled, it provides compressed swap space in RAM which can improve system responsiveness, especially on systems with limited RAM.
-
-### `cachy.kernelTweaks`
-- **Type**: Boolean
-- **Default**: `false`
-- **Description**: Enable kernel tweaks for performance, including:
-  - VM settings (swappiness, cache pressure, dirty pages)
-  - Kernel watchdog settings
-  - Network stack optimizations
-
-### `cachy.udevRules`
-- **Type**: Boolean
-- **Default**: `false`
-- **Description**: Enable udev rules for performance, including:
-  - Audio device permissions
-  - SATA link power management
-  - Storage device scheduler settings (BFQ for HDDs, mq-deadline for SSDs, none for NVMe)
-  - HDD power management
-  - NVIDIA GPU power management
-  - CPU DMA latency permissions
-  - Dynamic sound card power saving
-
-### `cachy.modprobeConfig`
-- **Type**: Boolean
-- **Default**: `false`
-- **Description**: Enable modprobe configuration tweaks, including:
-  - NVIDIA driver optimizations
-  - AMDGPU support for older GCN architectures
-  - Blacklisted watchdog modules
-  - Sound card power saving disabled
-
-### `cachy.systemdTweaks`
-- **Type**: Boolean
-- **Default**: `false`
-- **Description**: Enable systemd tweaks, including:
-  - Reduced startup and shutdown timeouts
-
-### `cachy.journaldTweaks`
-- **Type**: Boolean
-- **Default**: `false`
-- **Description**: Enable journald tweaks, including:
-  - Reduced system log storage limit
-
-### `cachy.xserverTweaks`
-- **Type**: Boolean
-- **Default**: `false`
-- **Description**: Enable X server tweaks, including:
-  - Touchpad tapping enabled by default
+- **Description**: Enable Zram
 
 ## Usage Examples
 
@@ -87,8 +84,8 @@ These options control specific aspects of the system performance. They can be en
 {
   cachy = {
     enable = true;
-    kernelTweaks = true;
-    udevRules = true;
+    kernel = true;
+    udev = true;
   };
 }
 ```
@@ -99,7 +96,7 @@ These options control specific aspects of the system performance. They can be en
   cachy = {
     enable = true;
     all = true;
-    xserverTweaks = false;
+    xserver = false;
   };
 }
 ```
