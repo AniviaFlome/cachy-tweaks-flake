@@ -58,7 +58,9 @@ in
       description = "Enable CachyOS helper scripts";
     };
 
-  };\n\n  config = mkIf (cfg.enable || cfg.all) {
+  };
+
+  config = mkIf (cfg.enable || cfg.all) {
     cachy = {
       kernel = mkIf cfg.all true;
       udev = mkIf cfg.all true;
