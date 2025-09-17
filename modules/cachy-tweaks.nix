@@ -203,4 +203,5 @@ in {
         DefaultTimeoutStopSec = "10s";
       })
     ]);
+  };
 }
