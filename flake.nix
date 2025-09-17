@@ -15,7 +15,5 @@
         cachy-tweaks = import ./modules/cachy-tweaks.nix;
         default = self.nixosModules.cachy-tweaks;
       };
-
-      cachy-tweaks = self.nixosModules.cachy-tweaks;
     };
 }
