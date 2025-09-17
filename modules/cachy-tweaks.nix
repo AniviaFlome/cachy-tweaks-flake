@@ -106,7 +106,7 @@ in
     '';
 
     boot.kernelParams = mkIf (cfg.kernel || cfg.all) [
-      "max_ptes_none = 409"
+      "max_ptes_none=409"
     ];
 
     services.udev.extraRules = mkIf (cfg.udev || cfg.all) ''
