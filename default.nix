@@ -1,5 +1,5 @@
 {
   imports = [
-    ./cachy-tweaks.nix
+    ./modules/cachy-tweaks.nix
   ];
 }
