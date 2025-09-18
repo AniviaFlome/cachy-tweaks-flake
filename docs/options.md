@@ -42,7 +42,7 @@
   - `dlss-swapper-dll` - Like dlss-swapper, but requires manually updating the nvngx_dlss.dll library
   - `kerver` - QoL script to show information about the current kernel
   - `paste-cachyos` - Script to paste terminal output for text files from the system
-  - `pci-latency` - Reduces latency_timer value to 80 for PCI sound cards
+  - `pci-latency` - Reduces latency_timer value to 80 for PCI sound cards (Impure, not recommended to use on NixOS)
   - `sbctl-batch-sign` - Helper script to easily sign kernel images and EFI binaries for secure boot
   - `topmem` - Shows RAM & swap & ksm stats of 10 processes in a descending order
   - `zink-run` - Makes it easier to execute an OpenGL program through Zink Gallium Driver

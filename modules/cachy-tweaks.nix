@@ -133,7 +133,7 @@ in
 
       # HDD power management
       ACTION=="add|change", KERNEL=="sd[a-z]", ATTR{queue/rotational}=="1", 
-          ATTRS{id/bus}=="ata", RUN+="/usr/bin/hdparm -B 254 -S 0 /dev/%k"
+          ATTRS{id/bus}=="ata", RUN+="/usr/bin/env hdparm -B 254 -S 0 /dev/%k"
 
       # Enable runtime PM for NVIDIA VGA/3D controller devices on driver bind
       ACTION=="add|bind", SUBSYSTEM=="pci", DRIVERS=="nvidia", 
@@ -150,20 +150,24 @@ in
 
       # Disable power saving for snd-hda-intel unless on battery
       ACTION=="add", SUBSYSTEM=="sound", KERNEL=="card*", DRIVERS=="snd_hda_intel", TEST!="/run/udev/snd-hda-intel-powersave", 
-          RUN+="/usr/bin/bash -c 'touch /run/udev/snd-hda-intel-powersave; 
+          RUN+="/usr/bin/env bash -c 'touch /run/udev/snd-hda-intel-powersave;
               [[ $(cat /sys/class/power_supply/BAT0/status 2>/dev/null) != "Discharging" ]] && 
               echo $(cat /sys/module/snd_hda_intel/parameters/power_save) > /run/udev/snd-hda-intel-powersave && 
               echo 0 > /sys/module/snd_hda_intel/parameters/power_save'"
 
       SUBSYSTEM=="power_supply", ENV{POWER_SUPPLY_ONLINE}=="0", TEST=="/sys/module/snd_hda_intel", 
-          RUN+="/usr/bin/bash -c 'echo $(cat /run/udev/snd-hda-intel-powersave 2>/dev/null || 
+          RUN+="/usr/bin/env bash -c 'echo $(cat /run/udev/snd-hda-intel-powersave 2>/dev/null ||
               echo 10) > /sys/module/snd_hda_intel/parameters/power_save'"
 
       SUBSYSTEM=="power_supply", ENV{POWER_SUPPLY_ONLINE}=="1", TEST=="/sys/module/snd_hda_intel", 
-          RUN+="/usr/bin/bash -c '[[ $(cat /sys/module/snd_hda_intel/parameters/power_save) != 0 ]] && 
+          RUN+="/usr/bin/env bash -c '[[ $(cat /sys/module/snd_hda_intel/parameters/power_save) != 0 ]] &&
               echo $(cat /sys/module/snd_hda_intel/parameters/power_save) > /run/udev/snd-hda-intel-powersave; 
               echo 0 > /sys/module/snd_hda_intel/parameters/power_save'"
     '';
+  environment.systemPackages = mkIf (cfg.udev || cfg.all) [
+    bash
+    hdparm
+  ];
 
     environment.systemPackages = mkIf (cfg.scripts || cfg.all) (
       let
