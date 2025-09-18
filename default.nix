@@ -1,9 +1,5 @@
-{ config, lib, ... }:
-
-with lib;
-
-let
-  cfg = config.cachy;
-in {
-  imports = [ ./modules/cachy-tweaks.nix ];
+{
+  imports = [
+    ./cachy-tweaks.nix
+  ];
 }

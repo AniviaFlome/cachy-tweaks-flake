@@ -12,7 +12,7 @@
     in
     {
       nixosModules = {
-        cachy-tweaks = import ./modules/cachy-tweaks.nix;
+        cachy-tweaks = import ./default.nix;
         default = self.nixosModules.cachy-tweaks;
       };
     };
