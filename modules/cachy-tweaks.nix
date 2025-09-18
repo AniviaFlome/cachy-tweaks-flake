@@ -60,17 +60,17 @@ in
 
   };
 
-  config = mkIf (cfg.enable || cfg.all) {
+  config = mkIf cfg.enable {
     cachy = {
-      kernel = mkIf cfg.all true;
-      udev = mkIf cfg.all true;
-      modprobe = mkIf cfg.all true;
-      systemd = mkIf cfg.all true;
-      xserver = mkIf cfg.all true;
-      scripts = mkIf cfg.all true;
+      kernel = mkIf cfg.all (mkDefault true);
+      udev = mkIf cfg.all (mkDefault true);
+      modprobe = mkIf cfg.all (mkDefault true);
+      systemd = mkIf cfg.all (mkDefault true);
+      xserver = mkIf cfg.all (mkDefault true);
+      scripts = mkIf cfg.all (mkDefault true);
     };
     
-    boot.kernel.sysctl = mkIf (cfg.kernel || cfg.all) {
+    boot.kernel.sysctl = mkIf cfg.kernel {
       "vm.swappiness" = 100;
       "vm.vfs_cache_pressure" = 50;
       "vm.dirty_bytes" = 268435456;
@@ -86,7 +86,7 @@ in
       "fs.file-max" = 2097152;
     };
     
-    boot.extraModprobeConfig = mkIf (cfg.modprobe || cfg.all) ''
+    boot.extraModprobeConfig = mkIf cfg.modprobe ''
       # NVIDIA driver tweaks
       options nvidia NVreg_UsePageAttributeTable=1
                     NVreg_InitializeSystemMemoryAllocations=0
@@ -105,11 +105,11 @@ in
       options snd_hda_intel power_save=0 power_save_controller=N
     '';
 
-    boot.kernelParams = mkIf (cfg.kernel || cfg.all) [
+    boot.kernelParams = mkIf cfg.kernel [
       "max_ptes_none=409"
     ];
 
-    services.udev.extraRules = mkIf (cfg.udev || cfg.all) ''
+    services.udev.extraRules = mkIf cfg.udev ''
       # Audio permissions
       KERNEL=="rtc0", GROUP="audio"
       KERNEL=="hpet", GROUP="audio"
@@ -164,12 +164,12 @@ in
               echo $(cat /sys/module/snd_hda_intel/parameters/power_save) > /run/udev/snd-hda-intel-powersave; 
               echo 0 > /sys/module/snd_hda_intel/parameters/power_save'"
     '';
-  environment.systemPackages = mkIf (cfg.udev || cfg.all) [
+  environment.systemPackages = mkIf cfg.udev [
     bash
     hdparm
   ];
 
-    environment.systemPackages = mkIf (cfg.scripts || cfg.all) (
+    environment.systemPackages = mkIf cfg.scripts (
       let
         scriptNames = builtins.attrNames (builtins.readDir ./scripts);
         scripts = map (name: pkgs.writeScriptBin name (builtins.readFile ./scripts/${name})) scriptNames;
@@ -187,7 +187,7 @@ in
       scripts ++ dependencies
     );
 
-    systemd = mkIf (cfg.systemd || cfg.all) {
+    systemd = mkIf cfg.systemd {
       settings = {
         Manager = {
           DefaultTimeoutStartSec = "15s";
@@ -196,11 +196,11 @@ in
         };
       };
     };
-    services.journald.extraConfig = mkIf (cfg.systemd || cfg.all) ''
+    services.journald.extraConfig = mkIf cfg.systemd ''
       SystemMaxUse=50M
     '';
 
-    services.xserver = mkIf (cfg.xserver || cfg.all) {
+    services.xserver = mkIf cfg.xserver {
       config = ''
       Section "InputClass"
           Identifier "libinput touchpad catchall"
@@ -212,7 +212,7 @@ in
     '';
     };
 
-    zramSwap = mkIf (cfg.zram || cfg.all) {
+    zramSwap = mkIf cfg.zram {
       enable = true;
       algorithm = "ztsd";
       memoryPercent = 100;

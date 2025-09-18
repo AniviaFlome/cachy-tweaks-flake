@@ -1,4 +1,0 @@
-#!/bin/sh
-# Wrapper script for powerprofilesctl to switch to performance profile on-demand
-echo "Game Performance - Switching to performance profile"
-echo "This is a placeholder script. In a real implementation, this would call powerprofilesctl."
