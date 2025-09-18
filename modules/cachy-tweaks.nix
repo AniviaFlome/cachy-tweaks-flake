@@ -192,7 +192,7 @@ in
         };
       };
     };
-    services.journald.extraConfig = = mkIf (cfg.systemd || cfg.all) { "SystemMaxUse=50M" };
+    services.journald.extraConfig = mkIf (cfg.systemd || cfg.all) { "SystemMaxUse=50M" };
 
     services.xserver = mkIf (cfg.xserver || cfg.all) {
       config = ''
