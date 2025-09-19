@@ -27,6 +27,7 @@ in
           curl
           sbctl
           lua
+          lua54Packages.luv
         ];
       in
       scripts ++ dependencies;
