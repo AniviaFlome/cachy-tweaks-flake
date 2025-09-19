@@ -4,7 +4,6 @@ with lib;
 
 {
   imports = [
-    ./base.nix
     ./kernel.nix
     ./modprobe.nix
     ./udev.nix
