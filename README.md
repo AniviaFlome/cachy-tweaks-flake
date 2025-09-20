@@ -11,7 +11,10 @@ Add this flake to your system's flake inputs:
 ```nix
 {
   inputs = {
-    cachy-tweaks.url = "github:AniviaFlome/cachy-tweaks-flake";
+    cachy-tweaks = {
+      url = "github:AniviaFlome/cachy-tweaks-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 }
 ```
