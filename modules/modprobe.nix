@@ -9,7 +9,7 @@ in
 {
   options.cachy.modprobe = mkOption {
     type = types.bool;
-    default = false;
+    default = cfg.all;
     description = "Enable modprobe configuration tweaks";
   };
 

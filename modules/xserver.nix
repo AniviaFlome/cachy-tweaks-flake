@@ -9,7 +9,7 @@ in
 {
   options.cachy.xserver = mkOption {
     type = types.bool;
-    default = false;
+    default = cfg.all;
     description = "Enable X server tweaks";
   };
 

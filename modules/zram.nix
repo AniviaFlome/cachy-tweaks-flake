@@ -9,7 +9,7 @@ in
 {
   options.cachy.zram = mkOption {
     type = types.bool;
-    default = true;
+    default = cfg.all;
     description = "Enable or disable ZRAM";
   };
 

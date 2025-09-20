@@ -22,15 +22,4 @@ with lib;
       description = "Enable all CachyOS tweaks";
     };
   };
-
-  config = {
-    cachy = {
-      kernel = mkIf config.cachy.all (mkDefault true);
-      udev = mkIf config.cachy.all (mkDefault true);
-      modprobe = mkIf config.cachy.all (mkDefault true);
-      systemd = mkIf config.cachy.all (mkDefault true);
-      xserver = mkIf config.cachy.all (mkDefault true);
-      scripts = mkIf config.cachy.all (mkDefault true);
-    };
-  };
 }

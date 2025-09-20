@@ -9,7 +9,7 @@ in
 {
   options.cachy.kernel = mkOption {
     type = types.bool;
-    default = false;
+    default = cfg.all;
     description = "Enable kernel tweaks for performance";
   };
 

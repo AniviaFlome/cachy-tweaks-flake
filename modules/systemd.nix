@@ -9,7 +9,7 @@ in
 {
   options.cachy.systemd = mkOption {
     type = types.bool;
-    default = false;
+    default = cfg.all;
     description = "Enable systemd and journald tweaks";
   };
 

@@ -9,7 +9,7 @@ in
 {
   options.cachy.scripts = mkOption {
     type = types.bool;
-    default = false;
+    default = cfg.all;
     description = "Enable CachyOS helper scripts";
   };
 

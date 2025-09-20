@@ -9,7 +9,7 @@ in
 {
   options.cachy.udev = mkOption {
     type = types.bool;
-    default = false;
+    default = cfg.all;
     description = "Enable udev rules for performance";
   };
 
