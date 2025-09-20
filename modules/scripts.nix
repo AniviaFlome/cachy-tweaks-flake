@@ -20,14 +20,11 @@ in
         scripts = map (name: pkgs.writeScriptBin name (builtins.readFile ./scripts/${name})) scriptNames;
         dependencies = with pkgs; [
           inxi
-          utillinux
-          systemd
           power-profiles-daemon
           pciutils
           curl
           sbctl
-          lua
-          lua54Packages.luv
+          (lua.withPackages (ps: with ps; [ luv ]))
         ];
       in
       scripts ++ dependencies;
