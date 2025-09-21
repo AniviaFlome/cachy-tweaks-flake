@@ -41,14 +41,14 @@ Then, in your NixOS configuration module, import and enable the module:
 
 The module provides the following options under `cachy.*`:
 
-- `enable`: Enable all CachyOS tweaks (default: false)
-- `all`: Enable all CachyOS tweaks at once (default: false)
-- `kernel`: Enable kernel tweaks for performance (default: false)
-- `scripts`: Enable CachyOS helper scripts (default: false)
-- `modprobe`: Enable modprobe configuration tweaks (default: false)
-- `systemd`: Enable systemd tweaks (default: false)
-- `udev`: Enable udev rules for performance (default: false)
-- `xserver`: Enable X server tweaks (default: false)
-- `zram`: Enable Zram (default: false)
+- `enable`: Enable all CachyOS tweaks
+- `all`: Enable all CachyOS tweaks at once
+- `kernel`: Enable kernel tweaks for performance
+- `scripts`: Enable CachyOS helper scripts
+- `modprobe`: Enable modprobe configuration tweaks
+- `systemd`: Enable systemd tweaks 
+- `udev`: Enable udev rules for performance
+- `xserver`: Enable X server tweaks
+- `zram`: Enable ZRAM
 
 For detailed information about each option, see [docs/options.md](docs/options.md).

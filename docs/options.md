@@ -14,27 +14,27 @@
 
 ### `cachy.all`
 - **Type**: Boolean
-- **Default**: `false`
+- **Default**: `config.cachy.all`
 - **Description**: Enable all of the tweaks
 
 ### `cachy.kernel`
 - **Type**: Boolean
-- **Default**: `false`
+- **Default**: `config.cachy.all`
 - **Description**: Enable kernel tweaks
 
 ### `cachy.modprobe`
 - **Type**: Boolean
-- **Default**: `false`
+- **Default**: `config.cachy.all`
 - **Description**: Enable modprobe configuration tweaks
 
 ### `cachy.scripts`
 - **Type**: Boolean
-- **Default**: `false`
+- **Default**: `config.cachy.all`
 - **Description**: Enable CachyOS helper scripts
 
 ### `cachy.scripts`
 - **Type**: Boolean
-- **Default**: `false`
+- **Default**: `config.cachy.all`
 - **Description**: Enable CachyOS helper scripts. When enabled, the following scripts will be available in your system:
   - `cachyos-bugreport.sh` - Collects various logs from inxi, dmesg and journalctl to aid in troubleshooting
   - `game-performance` - Wrapper script for powerprofilesctl to switch to performance profile on-demand
@@ -49,22 +49,22 @@
 
 ### `cachy.systemd`
 - **Type**: Boolean
-- **Default**: `false`
+- **Default**: `config.cachy.all`
 - **Description**: Enable systemd tweaks
 
 ### `cachy.xserver`
 - **Type**: Boolean
-- **Default**: `false`
+- **Default**: `config.cachy.all`
 - **Description**: Enable X server tweaks
 
 ### `cachy.udev`
 - **Type**: Boolean
-- **Default**: `false`
+- **Default**: `config.cachy.all`
 - **Description**: Enable udev rules
 
 ### `cachy.zram`
 - **Type**: Boolean
-- **Default**: `true`
+- **Default**: `config.cachy.all`
 - **Description**: Enable Zram
 
 ## Usage Examples
