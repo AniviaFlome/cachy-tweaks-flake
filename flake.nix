@@ -5,7 +5,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   };
 
-  outputs = { self, }:
+  outputs = { self, nixpkgs }:
     {
       nixosModules = {
         cachy-tweaks = import ./modules/cachy-tweaks.nix;
