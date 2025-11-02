@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -14,7 +19,7 @@ in
   };
 
   config = mkIf (cfg.enable && cfg.scripts) {
-    environment.systemPackages = 
+    environment.systemPackages =
       let
         scriptNames = builtins.attrNames (builtins.readDir ./scripts);
         scripts = map (name: pkgs.writeScriptBin name (builtins.readFile ./scripts/${name})) scriptNames;
