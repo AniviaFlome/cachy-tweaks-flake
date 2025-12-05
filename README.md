@@ -50,5 +50,3 @@ The module provides the following options under `cachy.*`:
 - `udev`: Enable udev rules for performance
 - `xserver`: Enable X server tweaks
 - `zram`: Enable ZRAM
-
-For detailed information about each option, see [docs/options.md](docs/options.md).
