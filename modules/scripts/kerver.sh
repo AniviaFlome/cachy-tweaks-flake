@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-cat << EOF
+cat <<EOF
 Check kernel version:
 
 $(cat /proc/version && uname -a)
@@ -18,9 +18,9 @@ $(zgrep -iE 'CONFIG_(GENERIC_CPU(=| is)|X86_64_VERSION|MZEN|MBULLDOZER|MPILEDRIV
 
 Current disk schedulers:
 
-$(for disk in /sys/block/*/
-do [ -f "$disk/queue/scheduler" ] \
-    && echo "$(basename "$disk"): $(cat "$disk/queue/scheduler")"
+$(for disk in /sys/block/*/; do
+  [ -f "$disk/queue/scheduler" ] &&
+    echo "$(basename "$disk"): $(cat "$disk/queue/scheduler")"
 done)
 
 Check available schedulers:

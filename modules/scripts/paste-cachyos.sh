@@ -10,6 +10,6 @@ EXTENSION="${FILENAME##*.}"
 RESPONSE="$(curl --data-binary @"${FILEPATH:-/dev/stdin}" --url $URL)"
 PASTELINK="${URL}${RESPONSE}"
 
-[ -z "$EXTENSION" ] && \
-    echo "$PASTELINK" || \
-    echo "${PASTELINK}.${EXTENSION}"
+[ -z "$EXTENSION" ] &&
+  echo "$PASTELINK" ||
+  echo "${PASTELINK}.${EXTENSION}"

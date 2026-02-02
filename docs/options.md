@@ -36,7 +36,7 @@
 - **Type**: Boolean
 - **Default**: `config.cachy.all`
 - **Description**: Enable CachyOS helper scripts. When enabled, the following scripts will be available in your system:
-  - `cachyos-bugreport.sh` - Collects various logs from inxi, dmesg and journalctl to aid in troubleshooting
+  - `cachyos-bugreport` - Collects various logs from inxi, dmesg and journalctl to aid in troubleshooting
   - `game-performance` - Wrapper script for powerprofilesctl to switch to performance profile on-demand
   - `dlss-swapper` - Wrapper script to force the latest DLSS preset in games that support the technology
   - `dlss-swapper-dll` - Like dlss-swapper, but requires manually updating the nvngx_dlss.dll library

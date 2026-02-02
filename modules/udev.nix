@@ -22,7 +22,7 @@ in
     services.udev.extraRules = ''
       # ZRAM Rules
       ACTION=="change", KERNEL=="zram0", ATTR{initstate}=="1", SYSCTL{vm.swappiness}="150", \
-          RUN+="/bin/sh -c 'echo N > /sys/module/zswap/parameters/enabled'"
+          RUN+="${pkgs.bash}/bin/sh -c 'echo N > /sys/module/zswap/parameters/enabled'"
 
       # HPET Permissions
       KERNEL=="rtc0", GROUP="audio"

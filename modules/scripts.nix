@@ -21,8 +21,11 @@ in
   config = mkIf (cfg.enable && cfg.scripts) {
     environment.systemPackages =
       let
-        scriptNames = builtins.attrNames (builtins.readDir ./scripts);
-        scripts = map (name: pkgs.writeScriptBin name (builtins.readFile ./scripts/${name})) scriptNames;
+        scriptFiles = builtins.attrNames (builtins.readDir ./scripts);
+        stripExt = name: builtins.head (builtins.split "\\.(sh|lua)$" name);
+        scripts = map (
+          name: pkgs.writeScriptBin (stripExt name) (builtins.readFile ./scripts/${name})
+        ) scriptFiles;
         dependencies = with pkgs; [
           inxi
           power-profiles-daemon
