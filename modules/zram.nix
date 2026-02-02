@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -20,5 +25,11 @@ in
       memoryPercent = 100;
       priority = 100;
     };
+
+    services.udev.extraRules = ''
+      # ZRAM Rules
+      ACTION=="change", KERNEL=="zram0", ATTR{initstate}=="1", SYSCTL{vm.swappiness}="150", \
+          RUN+="${pkgs.bash}/bin/sh -c 'echo N > /sys/module/zswap/parameters/enabled'"
+    '';
   };
 }
