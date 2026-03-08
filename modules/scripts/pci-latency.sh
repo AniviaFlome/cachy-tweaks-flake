@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 # This script is designed to improve the performance and reduce audio latency
 # for sound cards by setting the PCI latency timer to an optimal value of 80
 # cycles. It also resets the default value of the latency timer for other PCI

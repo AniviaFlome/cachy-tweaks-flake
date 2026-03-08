@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
 # This forces Nvidia DLSS to use the latest preset for SR, RR and framegen + skips ngx updater
 
