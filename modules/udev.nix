@@ -26,6 +26,7 @@ in
 
       # SATA Active Link Power Management
       ACTION=="add", SUBSYSTEM=="scsi_host", KERNEL=="host*", \
+          ATTR{link_power_management_supported}=="1", \
           ATTR{link_power_management_policy}=="*", \
           ATTR{link_power_management_policy}="max_performance"
 
@@ -39,7 +40,7 @@ in
 
       # NVMe SSD
       ACTION=="add|change", KERNEL=="nvme[0-9]*", ATTR{queue/rotational}=="0", \
-          ATTR{queue/scheduler}="none"
+          ATTR{queue/scheduler}="kyber"
 
       # hdparm Rules
       ACTION=="add|change", KERNEL=="sd[a-z]", ATTR{queue/rotational}=="1", \

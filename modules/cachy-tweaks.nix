@@ -9,7 +9,9 @@ with lib;
     ./udev.nix
     ./systemd.nix
     ./xserver.nix
-    ./zram.nix
+    ./ananicy.nix
+    ./audio.nix
+    ./wireless.nix
     ./scripts.nix
   ];
 

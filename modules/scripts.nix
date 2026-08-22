@@ -9,6 +9,34 @@ with lib;
 
 let
   cfg = config.cachy;
+
+  # Lua scripts need a lua interpreter; writeScriptBin would wrap them in bash
+  lua = pkgs.lua.withPackages (ps: with ps; [ luv ]);
+
+  mkShellScript = name: pkgs.writeScriptBin name (builtins.readFile ./scripts/${name}.sh);
+
+  topmem = pkgs.writeShellScriptBin "topmem" ''
+    exec ${lib.getExe' lua "lua"} ${./scripts/topmem.lua} "$@"
+  '';
+
+  scripts = map mkShellScript [
+    "cachyos-bugreport"
+    "dlss-swapper"
+    "dlss-swapper-dll"
+    "game-performance"
+    "kerver"
+    "paste-cachyos"
+    "sbctl-batch-sign"
+    "zink-run"
+  ];
+
+  dependencies = with pkgs; [
+    inxi
+    power-profiles-daemon
+    pciutils
+    curl
+    sbctl
+  ];
 in
 
 {
@@ -19,22 +47,6 @@ in
   };
 
   config = mkIf (cfg.enable && cfg.scripts) {
-    environment.systemPackages =
-      let
-        scriptFiles = builtins.attrNames (builtins.readDir ./scripts);
-        stripExt = name: builtins.head (builtins.split "\\.(sh|lua)$" name);
-        scripts = map (
-          name: pkgs.writeScriptBin (stripExt name) (builtins.readFile ./scripts/${name})
-        ) scriptFiles;
-        dependencies = with pkgs; [
-          inxi
-          power-profiles-daemon
-          pciutils
-          curl
-          sbctl
-          (lua.withPackages (ps: with ps; [ luv ]))
-        ];
-      in
-      scripts ++ dependencies;
+    environment.systemPackages = scripts ++ [ topmem ] ++ dependencies;
   };
 }

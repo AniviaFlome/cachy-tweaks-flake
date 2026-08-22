@@ -30,7 +30,6 @@ Then, in your NixOS configuration module, import and enable the module:
   cachy = {
     enable = true;
     all = false;
-    zram = false;
     kernel = true;
     udev = true;
   };
@@ -43,10 +42,16 @@ The module provides the following options under `cachy.*`:
 
 - `enable`: Enable all CachyOS tweaks
 - `all`: Enable all CachyOS tweaks at once
+- `ananicy`: Enable ananicy-cpp with CachyOS rules
+- `audio`: Enable audio tweaks (realtime limits, rtkit log level)
 - `kernel`: Enable kernel tweaks for performance
 - `scripts`: Enable CachyOS helper scripts
 - `modprobe`: Enable modprobe configuration tweaks
 - `systemd`: Enable systemd tweaks 
 - `udev`: Enable udev rules for performance
+- `wireless`: Enable wireless tweaks (set regulatory domain from timezone)
 - `xserver`: Enable X server tweaks
-- `zram`: Enable ZRAM
+
+## Not implemented tweaks
+
+See [docs/not-added-tweaks.md](docs/not-added-tweaks.md) for CachyOS tweaks that are intentionally not added to this flake.

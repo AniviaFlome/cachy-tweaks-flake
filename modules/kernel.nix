@@ -25,13 +25,17 @@ in
       "kernel.unprivileged_userns_clone" = 1;
       "kernel.printk" = "3 3 3 3";
       "kernel.kptr_restrict" = 2;
-      "kernel.kexec_load_disabled" = 1;
       "net.core.netdev_max_backlog" = 4096;
       "fs.file-max" = 2097152;
     };
 
-    boot.kernelParams = [
-      "max_ptes_none=409"
+    # CachyOS usr/lib/tmpfiles.d/thp.conf and thp-shrinker.conf
+    systemd.tmpfiles.rules = [
+      "w! /sys/kernel/mm/transparent_hugepage/defrag - - - - defer+madvise"
+      "w! /sys/kernel/mm/transparent_hugepage/khugepaged/max_ptes_none - - - - 409"
     ];
+
+    # CachyOS usr/lib/modules-load.d/ntsync.conf
+    boot.kernelModules = [ "ntsync" ];
   };
 }
