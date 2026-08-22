@@ -10,13 +10,6 @@
 - **Default**: `false`
 - **Description**: Enable all CachyOS tweaks at once. When set to `true`, this automatically enables all individual tweak options listed below.
 
-## Individual Tweak Options
-
-### `cachy.all`
-- **Type**: Boolean
-- **Default**: `config.cachy.all`
-- **Description**: Enable all of the tweaks
-
 ### `cachy.ananicy`
 - **Type**: Boolean
 - **Default**: `config.cachy.all`
@@ -36,11 +29,6 @@
 - **Type**: Boolean
 - **Default**: `config.cachy.all`
 - **Description**: Enable modprobe configuration tweaks.
-
-### `cachy.scripts`
-- **Type**: Boolean
-- **Default**: `config.cachy.all`
-- **Description**: Enable CachyOS helper scripts.
 
 ### `cachy.scripts`
 - **Type**: Boolean
