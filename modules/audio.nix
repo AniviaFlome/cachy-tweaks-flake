@@ -35,9 +35,8 @@ in
     ];
 
     # CachyOS usr/lib/systemd/system/rtkit-daemon.service.d/override.conf
-    environment.etc."systemd/system/rtkit-daemon.service.d/override.conf".text = ''
-      [Service]
-      LogLevelMax=info
-    '';
+    # Expressed via the systemd module so it merges with the drop-in NixOS
+    # already generates for rtkit-daemon instead of colliding with it.
+    systemd.services.rtkit-daemon.serviceConfig.LogLevelMax = "info";
   };
 }

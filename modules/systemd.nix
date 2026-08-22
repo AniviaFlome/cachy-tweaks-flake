@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -41,10 +46,13 @@ in
     ];
 
     # CachyOS usr/lib/systemd/system/user@.service.d/delegate.conf
-    environment.etc."systemd/system/user@.service.d/delegate.conf".text = ''
-      [Service]
-      Delegate=cpu cpuset io memory pids
-    '';
+    # Shipped via systemd.packages because NixOS owns /etc/systemd/system wholesale.
+    systemd.packages = [
+      (pkgs.writeTextDir "lib/systemd/system/user@.service.d/delegate.conf" ''
+        [Service]
+        Delegate=cpu cpuset io memory pids
+      '')
+    ];
 
     # CachyOS usr/lib/systemd/timesyncd.conf.d/10-timesyncd.conf
     # Upstream falls back to the Arch NTP pool; use the NixOS pool instead
