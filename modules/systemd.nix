@@ -36,9 +36,7 @@ in
       };
     };
 
-    services.journald.extraConfig = ''
-      SystemMaxUse=50M
-    '';
+    services.journald.settings.Journal.SystemMaxUse = "50M";
 
     # CachyOS usr/lib/tmpfiles.d/coredump.conf
     systemd.tmpfiles.rules = [
